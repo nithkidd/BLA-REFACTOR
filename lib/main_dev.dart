@@ -8,14 +8,25 @@ import './data/repositories/ride/ride_repository.dart';
 import './data/repositories/ride_preference/ride_preference_repository_mock.dart';
 import './data/repositories/ride_preference/ride_preference_repository.dart';
 
+import './ui/stats/ride_preference_state.dart';
+
 List<SingleChildWidget> get devProviders {
+  final ridePreferenceState = RidePreferenceRepositoryMock();
   return [
-    // inject location repo
-      Provider<LocationReposity>(create: (ctx) => LocationReposityMock()),
-    // inject ride repo
+    // Inject location, ride & ride preference repo
+    Provider<LocationReposity>(create: (ctx) => LocationReposityMock()),
+
     Provider<RideRepository>(create: (ctx) => RideRepositoryMock()),
-    // inject ride preference repo
-    Provider<RidePreferenceRepository>(create: (ctx) => RidePreferenceRepositoryMock()),
+
+    Provider<RidePreferenceRepository>(
+      create: (ctx) => RidePreferenceRepositoryMock(),
+    ),
+
+    //Inject RidePrefs State
+    ChangeNotifierProvider<RidePreferenceState>(
+      create: (ctx) =>
+          RidePreferenceState(ridePreferenceRepository: ridePreferenceState),
+    ),
   ];
 }
 
